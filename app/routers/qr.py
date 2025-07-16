@@ -26,7 +26,7 @@ def generate_qr(
     cafe_name = table.admin.restaurant_name
 
     # Generate QR
-    qr_url = f"https://food-order-client-2pir.vercel.app/food?table_id={table.id}"
+    qr_url = f"https://food-order-client-three.vercel.app/food?table_id={table.id}"
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_M,
