@@ -7,7 +7,7 @@ app = FastAPI(title="Multi-Tenant Food Ordering API")
 
 # ✅ CORS configuration
 origins = [
-    "https://food-order-client-three.vercel.app"
+    "https://www.jiffymenu.com"
 ]
 
 app.add_middleware(
