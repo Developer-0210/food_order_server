@@ -150,3 +150,13 @@ class SignupRequest(BaseModel):
     secret_key:str
 
 
+# ---------- TABLE CALL REQUEST ----------
+class TableCallRequestCreate(BaseModel):
+    table_id: int
+
+class TableCallRequestOut(BaseModel):
+    id: int
+    table_number: int
+    created_at: datetime
+    fixed_message: str
+    model_config = ConfigDict(from_attributes=True)
