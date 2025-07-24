@@ -164,3 +164,52 @@ def get_order_history_with_secret(
     current_admin: models.Admin = Depends(auth.get_current_admin),
 ):
     return db.query(models.Order).filter(models.Order.admin_id == current_admin.id).all()
+
+
+
+
+
+# ✅ Create table call request (customer presses button)
+@router.post("/table_request", response_model=schemas.TableCallRequestOut)
+def create_table_call_request(
+    request: schemas.TableCallRequestCreate,
+    db: Session = Depends(get_db),
+):
+    table = db.query(models.Table).filter(models.Table.id == request.table_id).first()
+    if not table:
+        raise HTTPException(status_code=404, detail="Invalid table ID")
+
+    call = models.TableCallRequest(
+        table_id=table.id,
+        admin_id=table.admin_id,
+    )
+    db.add(call)
+    db.commit()
+    db.refresh(call)
+
+    return schemas.TableCallRequestOut(
+        id=call.id,
+        table_number=call.table.table_number,
+        created_at=call.created_at,
+        fixed_message=call.fixed_message,
+    )
+
+# 🔒 Delete table call request (admin handles/clears it)
+@router.delete("/table_request/remove/{request_id}", response_model=dict)
+def delete_table_call_request(
+    request_id: int,
+    db: Session = Depends(get_db),
+    current_admin: models.Admin = Depends(get_current_admin)
+):
+    call = db.query(models.TableCallRequest).filter(
+        models.TableCallRequest.id == request_id,
+        models.TableCallRequest.admin_id == current_admin.id
+    ).first()
+
+    if not call:
+        raise HTTPException(status_code=404, detail="Call request not found")
+
+    db.delete(call)
+    db.commit()
+
+    return {"message": f"Call request {request_id} deleted successfully"}
