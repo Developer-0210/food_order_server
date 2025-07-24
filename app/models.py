@@ -170,3 +170,21 @@ class PasswordOTP(Base):
     created_at = Column(DateTime(timezone=True), default=ist_now)
 
     __table_args__ = (UniqueConstraint("email", name="uq_password_email_otp"),)
+
+
+
+class TableCallRequest(Base):
+    __tablename__ = "table_call_requests"
+
+    id = Column(Integer, primary_key=True, index=True)
+    table_id = Column(Integer, ForeignKey("tables.id"), nullable=False)
+    admin_id = Column(Integer, ForeignKey("admins.id"), nullable=False)
+
+    created_at = Column(DateTime(timezone=True), default=ist_now)
+
+    table = relationship("Table")
+    admin = relationship("Admin")
+
+    @property
+    def fixed_message(self):
+        return f"Call from Table {self.table.table_number}" if self.table else "Call from unknown table"
