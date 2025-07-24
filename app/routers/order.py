@@ -213,3 +213,21 @@ def delete_table_call_request(
     db.commit()
 
     return {"message": f"Call request {request_id} deleted successfully"}
+@router.get("/table_request", response_model=List[schemas.TableCallRequestOut])
+def get_table_call_requests(
+    db: Session = Depends(get_db),
+    current_admin: models.Admin = Depends(get_current_admin)
+):
+    requests = db.query(models.TableCallRequest).filter(
+        models.TableCallRequest.admin_id == current_admin.id
+    ).order_by(models.TableCallRequest.created_at.desc()).all()
+
+    return [
+        schemas.TableCallRequestOut(
+            id=req.id,
+            table_number=req.table.table_number,
+            created_at=req.created_at,
+            fixed_message=req.fixed_message,
+        )
+        for req in requests
+    ]
