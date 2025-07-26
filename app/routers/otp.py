@@ -45,7 +45,7 @@ This OTP is valid for 3 minutes.
 If you did not initiate this request, please ignore this email.
 
 Thanks & Regards,  
-Notesfy Team
+JiffyMenu Team
 """
     )
 
