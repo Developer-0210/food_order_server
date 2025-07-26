@@ -38,7 +38,7 @@ def request_otp(data: schemas.SignupRequest, db: Session = Depends(get_db)):
         subject="Your OTP for Signup",
         content=f"""\nHi,
 
-Your One-Time Password (OTP) for signing up on Notesfy is: {otp}
+Your One-Time Password (OTP) for signing up on JiffyMenu  is: {otp}
 
 This OTP is valid for 3 minutes.
 
