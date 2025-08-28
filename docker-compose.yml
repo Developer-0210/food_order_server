@@ -10,6 +10,7 @@ services:
       - .env   # load all variables from .env
     depends_on:
       - db
+    command: ./start.sh   # ensure compose uses the script
 
   db:
     image: postgres:15
