@@ -1,2 +1,8 @@
+#!/bin/bash
+set -e
+
+echo "🚀 Running Alembic migrations..."
 alembic upgrade head
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+echo "✅ Starting FastAPI with Gunicorn + Uvicorn workers..."
+exec gunicorn -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000 --workers 4 --timeout 60
