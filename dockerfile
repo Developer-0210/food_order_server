@@ -5,13 +5,15 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Copy requirements from project root
+# Copy requirements first (better build cache)
 COPY requirements.txt .
-
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy everything from root into /app
+# Copy project files
 COPY . .
 
-# Run FastAPI with Gunicorn + Uvicorn
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "app.main:app", "--bind", "0.0.0.0:8000", "--workers", "4", "--timeout", "60"]
+# Make start.sh executable
+RUN chmod +x /app/start.sh
+
+# Default command
+CMD ["./start.sh"]
